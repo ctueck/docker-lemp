@@ -1,0 +1,45 @@
+version: "3.0"
+
+services:
+
+  db:
+    image: mariadb:${MARIADB_TAG:-latest}
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-phpapp}
+      MARIADB_USER: ${DB_USER:-phpapp}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./initdb.d:/docker-entrypoint-initdb.d:ro
+      - data:/var/lib/mysql
+
+  php:
+    build:
+      context: ./php
+      args:
+        PHP_TAG: ${PHP_TAG:-8-fpm}
+        PHP_EXT: ${PHP_EXT:-}
+    volumes:
+      - ./html:/var/www/html
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_NAME: ${DB_NAME:-phpapp}
+      DB_USER: ${DB_USER:-phpapp}
+      DB_PASSWORD: ${DB_PASSWORD}
+      ADMIN_PASSWORD: ${DB_PASSWORD}
+
+  web:
+    image: nginx:${NGINX_TAG:-latest}
+    depends_on:
+      - php
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./html:/var/www/html:ro
+
+volumes:
+  data:
+
