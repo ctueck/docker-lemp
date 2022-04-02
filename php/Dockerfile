@@ -13,3 +13,5 @@ RUN test -z "$APT_GET" || ( \
 ARG PHP_EXT
 RUN test -z "$PHP_EXT" || docker-php-ext-install $PHP_EXT
 
+COPY getenv-docker.php /usr/local/lib/php
+
