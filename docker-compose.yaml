@@ -19,8 +19,9 @@ services:
       args:
         PHP_TAG: ${PHP_TAG:-8-fpm}
         PHP_EXT: ${PHP_EXT:-}
+        APT_GET: ${APT_GET:-}
     volumes:
-      - ./html:/var/www/html
+      - ${HTML_ROOT:-./html}:/var/www/html
     depends_on:
       - db
     environment:
@@ -38,7 +39,7 @@ services:
       - "${WEB_PORT:-8080}:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./html:/var/www/html:ro
+      - ${HTML_ROOT:-./html}:/var/www/html:ro
 
 volumes:
   data:
