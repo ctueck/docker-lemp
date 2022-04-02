@@ -30,6 +30,8 @@ services:
       DB_USER: ${DB_USER:-phpapp}
       DB_PASSWORD: ${DB_PASSWORD}
       ADMIN_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .env.app
 
   web:
     image: nginx:${NGINX_TAG:-latest}
