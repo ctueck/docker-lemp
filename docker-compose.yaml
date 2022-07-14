@@ -9,6 +9,7 @@ services:
       MARIADB_USER: ${DB_USER:-phpapp}
       MARIADB_PASSWORD: ${DB_PASSWORD}
       MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MARIADB_AUTO_UPGRADE: "1"
     volumes:
       - ./initdb.d:/docker-entrypoint-initdb.d:ro
       - data:/var/lib/mysql
